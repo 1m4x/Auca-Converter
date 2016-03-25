@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Converter</string>
     <string name="title_activity_length">Length</string>
+    <string name="title_activity_currency">Currency</string>
 </resources>

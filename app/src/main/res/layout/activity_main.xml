@@ -33,5 +33,6 @@
         android:text="Currency"
         android:id="@+id/button3"
         android:layout_below="@+id/button2"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="StartCurrency" />
 </RelativeLayout>
