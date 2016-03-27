@@ -10,15 +10,16 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Length extends AppCompatActivity {
+public class Mass extends AppCompatActivity {
     public List<Double> bases;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_length);
+        setContentView(R.layout.activity_mass);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -30,42 +31,42 @@ public class Length extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        Spinner spinner1 = (Spinner) findViewById(R.id.spinner);
-        Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
 
-        List<String> Lengths =  new ArrayList<String>();
-        Lengths.add("kilometers");
-        Lengths.add("meters");
-        Lengths.add("inches");
+        Spinner spinner5 = (Spinner) findViewById(R.id.spinner5);
+        Spinner spinner6 = (Spinner) findViewById(R.id.spinner6);
+
+        List<String> MassUnits =  new ArrayList<String>();
+        MassUnits.add("g");
+        MassUnits.add("kg");
+        MassUnits.add("lbs");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, Lengths);
+                this, android.R.layout.simple_spinner_item, MassUnits);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner sItems = (Spinner) findViewById(R.id.spinner);
+        Spinner sItems = (Spinner) findViewById(R.id.spinner5);
         sItems.setAdapter(adapter);
 
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, Lengths);
+                this, android.R.layout.simple_spinner_item, MassUnits);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner sItems2 = (Spinner) findViewById(R.id.spinner2);
+        Spinner sItems2 = (Spinner) findViewById(R.id.spinner6);
         sItems2.setAdapter(adapter2);
-
-
     }
+
     public void Convert(View view)
     {
-        bases = new ArrayList<>(); // m to <sth>
-        bases.add(1000.0); // -> km
-        bases.add(1.0); // -> meter
-        bases.add(0.0254); // -> inch
+        bases = new ArrayList<>(); // g to <sth>
+        bases.add(1.0); // -> g
+        bases.add(1000.0); // -> kg
+        bases.add(453.592); // -> lbs
 
-        Spinner unit1 = (Spinner) findViewById(R.id.spinner);
-        Spinner unit2 = (Spinner) findViewById(R.id.spinner2);
+        Spinner unit1 = (Spinner) findViewById(R.id.spinner5);
+        Spinner unit2 = (Spinner) findViewById(R.id.spinner6);
 
-        EditText Value1 = (EditText) findViewById(R.id.editText);
-        EditText Value2 = (EditText) findViewById(R.id.editText2);
+        EditText Value1 = (EditText) findViewById(R.id.editText5);
+        EditText Value2 = (EditText) findViewById(R.id.editText6);
 
         //double a = Integer.parseInt(Value1.getText().toString() );
         //double b = Integer.parseInt(Value2.getText().toString());
@@ -73,28 +74,28 @@ public class Length extends AppCompatActivity {
         double a = Double.parseDouble(Value1.getText().toString());
         double b = 0.0;
 
-        if (unit1.getSelectedItem().toString().equals("kilometers"))
+        if (unit1.getSelectedItem().toString().equals("g"))
         {
-            a = a * bases.get(0); // km to meter
+            a = a * bases.get(0); // g to g
         } else
-        if (unit1.getSelectedItem().toString().equals("meters"))
+        if (unit1.getSelectedItem().toString().equals("kg"))
         {
-            a = a * bases.get(1); // meter to meter
+            a = a * bases.get(1); // kg to g
         } else
-        if (unit1.getSelectedItem().toString().equals("inches"))
+        if (unit1.getSelectedItem().toString().equals("lbs"))
         {
-            a = a * bases.get(2); // km to meter
+            a = a * bases.get(2); // lbs to g
         }
 
-        if (unit2.getSelectedItem().toString().equals("kilometers"))
+        if (unit2.getSelectedItem().toString().equals("g"))
         {
             b = a / bases.get(0);
         } else
-        if (unit2.getSelectedItem().toString().equals("meters"))
+        if (unit2.getSelectedItem().toString().equals("kg"))
         {
             b = a / bases.get(1);
         } else
-        if (unit2.getSelectedItem().toString().equals("inches"))
+        if (unit2.getSelectedItem().toString().equals("lbs"))
         {
             b = a / bases.get(2);
         }

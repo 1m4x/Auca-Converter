@@ -25,6 +25,10 @@
         <activity
             android:name=".Currency"
             android:label="@string/title_activity_currency"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Mass"
+            android:label="@string/title_activity_mass"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

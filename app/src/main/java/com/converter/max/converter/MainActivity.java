@@ -23,4 +23,9 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = new Intent(this, Currency.class);
         startActivity(myIntent);
     }
+    public void StartMass(View view)
+    {
+        Intent myIntent = new Intent(this, Mass.class);
+        startActivity(myIntent);
+    }
 }
