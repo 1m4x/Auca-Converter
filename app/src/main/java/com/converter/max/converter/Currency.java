@@ -30,7 +30,6 @@ import java.util.List;
 
 
 public class Currency extends AppCompatActivity {
-    public List<Double> bases;
     public String req_result;
     public JSONObject exchangeRates;
     public List<String> Rates;
@@ -138,17 +137,15 @@ public class Currency extends AppCompatActivity {
     }
     public void whenJSONgot() throws JSONException// fill values as soon as we got response from fixer
     {
-        bases = new ArrayList<>(); // usd to <sth>
         Rates =  new ArrayList<String>();
         exchangeRates = exchangeRates.getJSONObject("rates");
-
+        exchangeRates.put("USD", 1.0);
         Iterator<String> iter = exchangeRates.keys();
         while (iter.hasNext()) {
             String key = iter.next();
             try {
                 Double value = exchangeRates.getDouble(key);
                 Rates.add(key);
-                bases.add(value);
             } catch (JSONException e) {
                 // Something went wrong!
             }
