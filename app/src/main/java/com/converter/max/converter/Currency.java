@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -32,6 +33,7 @@ public class Currency extends AppCompatActivity {
     public List<Double> bases;
     public String req_result;
     public JSONObject exchangeRates;
+    public List<String> Rates;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,25 +51,6 @@ public class Currency extends AppCompatActivity {
         });
 
         new DownloadWebpageTask().execute("http://api.fixer.io/latest?base=USD");
-
-        Spinner spinner1 = (Spinner) findViewById(R.id.spinner3);
-        Spinner spinner2 = (Spinner) findViewById(R.id.spinner4);
-
-        List<String> Rates =  new ArrayList<String>();
-        Rates.add("USD");
-        Rates.add("EUR");
-        Rates.add("GBP");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, Rates);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner sItems = (Spinner) findViewById(R.id.spinner3);
-        sItems.setAdapter(adapter);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, Rates);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner sItems2 = (Spinner) findViewById(R.id.spinner4);
-        sItems2.setAdapter(adapter2);
     }
     private class DownloadWebpageTask extends AsyncTask<String, Void, String>{
         @Override
@@ -148,40 +131,42 @@ public class Currency extends AppCompatActivity {
         double a = Double.parseDouble(Value1.getText().toString());
         double b = 0.0;
 
-        if (unit1.getSelectedItem().toString().equals("USD"))
-        {
-            a = a / bases.get(0);
-        } else
-        if (unit1.getSelectedItem().toString().equals("EUR"))
-        {
-            a = a / bases.get(1);
-        } else
-        if (unit1.getSelectedItem().toString().equals("GBP"))
-        {
-            a = a / bases.get(2);
-        }
+        a = a / exchangeRates.getDouble(unit1.getSelectedItem().toString());
+        b = a * exchangeRates.getDouble(unit2.getSelectedItem().toString());
 
-        if (unit2.getSelectedItem().toString().equals("USD"))
-        {
-            b = a * bases.get(0);
-        } else
-        if (unit2.getSelectedItem().toString().equals("EUR"))
-        {
-            b = a * bases.get(1);
-        } else
-        if (unit2.getSelectedItem().toString().equals("GBP"))
-        {
-            b = a * bases.get(2);
-        }
         Value2.setText("" + b);
     }
     public void whenJSONgot() throws JSONException// fill values as soon as we got response from fixer
     {
         bases = new ArrayList<>(); // usd to <sth>
+        Rates =  new ArrayList<String>();
         exchangeRates = exchangeRates.getJSONObject("rates");
-        bases.add(1.0); // USD to USD
-        bases.add(exchangeRates.getDouble("EUR"));
-        bases.add(exchangeRates.getDouble("GBP"));
+
+        Iterator<String> iter = exchangeRates.keys();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            try {
+                Double value = exchangeRates.getDouble(key);
+                Rates.add(key);
+                bases.add(value);
+            } catch (JSONException e) {
+                // Something went wrong!
+            }
+        }
+
+        Spinner spinner1 = (Spinner) findViewById(R.id.spinner3);
+        Spinner spinner2 = (Spinner) findViewById(R.id.spinner4);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, Rates);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner sItems = (Spinner) findViewById(R.id.spinner3);
+        sItems.setAdapter(adapter);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, Rates);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner sItems2 = (Spinner) findViewById(R.id.spinner4);
+        sItems2.setAdapter(adapter2);
     }
 }
 
