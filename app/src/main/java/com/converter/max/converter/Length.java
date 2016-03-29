@@ -1,5 +1,6 @@
 package com.converter.max.converter;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -30,6 +31,7 @@ public class Length extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        restoreText();
         Spinner spinner1 = (Spinner) findViewById(R.id.spinner);
         Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
 
@@ -101,5 +103,30 @@ public class Length extends AppCompatActivity {
 
         Value2.setText("" + b);
     }
+    @Override
+    protected void onDestroy()
+    {
+        EditText Value1 = (EditText) findViewById(R.id.editText);
+        EditText Value2 = (EditText) findViewById(R.id.editText2);
 
+        SharedPreferences.Editor prefs = getPreferences(MODE_PRIVATE).edit();
+        prefs.putString("saved", "1");
+        prefs.putString("Length-1", Value1.getText().toString());
+        prefs.putString("Length-2", Value2.getText().toString());
+        prefs.apply();
+        super.onDestroy();
+    }
+    public void restoreText()
+    {
+        EditText Value1 = (EditText) findViewById(R.id.editText);
+        EditText Value2 = (EditText) findViewById(R.id.editText2);
+
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        String restoredText = prefs.getString("saved", null);
+        if (restoredText != null)
+        {
+            Value1.setText(prefs.getString("Length-1", "0"));
+            Value2.setText(prefs.getString("Length-2", "0"));
+        }
+    }
 }

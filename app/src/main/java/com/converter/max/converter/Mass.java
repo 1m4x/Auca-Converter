@@ -1,5 +1,6 @@
 package com.converter.max.converter;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -31,7 +32,7 @@ public class Mass extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
+        restoreText();
         Spinner spinner5 = (Spinner) findViewById(R.id.spinner5);
         Spinner spinner6 = (Spinner) findViewById(R.id.spinner6);
 
@@ -102,5 +103,30 @@ public class Mass extends AppCompatActivity {
 
         Value2.setText("" + b);
     }
+    @Override
+    protected void onDestroy()
+    {
+        EditText Value1 = (EditText) findViewById(R.id.editText5);
+        EditText Value2 = (EditText) findViewById(R.id.editText6);
 
+        SharedPreferences.Editor prefs = getPreferences(MODE_PRIVATE).edit();
+        prefs.putString("saved", "1");
+        prefs.putString("Mass-1", Value1.getText().toString());
+        prefs.putString("Mass-2", Value2.getText().toString());
+        prefs.apply();
+        super.onDestroy();
+    }
+    public void restoreText()
+    {
+        EditText Value1 = (EditText) findViewById(R.id.editText5);
+        EditText Value2 = (EditText) findViewById(R.id.editText6);
+
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        String restoredText = prefs.getString("saved", null);
+        if (restoredText != null)
+        {
+            Value1.setText(prefs.getString("Mass-1", "0"));
+            Value2.setText(prefs.getString("Mass-2", "0"));
+        }
+    }
 }

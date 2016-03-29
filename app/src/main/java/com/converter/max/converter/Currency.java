@@ -1,5 +1,6 @@
 package com.converter.max.converter;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -150,7 +151,7 @@ public class Currency extends AppCompatActivity {
                 // Something went wrong!
             }
         }
-
+        restoreText();
         Spinner spinner1 = (Spinner) findViewById(R.id.spinner3);
         Spinner spinner2 = (Spinner) findViewById(R.id.spinner4);
 
@@ -164,6 +165,32 @@ public class Currency extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner sItems2 = (Spinner) findViewById(R.id.spinner4);
         sItems2.setAdapter(adapter2);
+    }
+    @Override
+    protected void onDestroy()
+    {
+        EditText Value1 = (EditText) findViewById(R.id.editText3);
+        EditText Value2 = (EditText) findViewById(R.id.editText4);
+
+        SharedPreferences.Editor prefs = getPreferences(MODE_PRIVATE).edit();
+        prefs.putString("saved", "1");
+        prefs.putString("Currency-1", Value1.getText().toString());
+        prefs.putString("Currency-2", Value2.getText().toString());
+        prefs.apply();
+        super.onDestroy();
+    }
+    public void restoreText()
+    {
+        EditText Value1 = (EditText) findViewById(R.id.editText3);
+        EditText Value2 = (EditText) findViewById(R.id.editText4);
+
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        String restoredText = prefs.getString("saved", null);
+        if (restoredText != null)
+        {
+            Value1.setText(prefs.getString("Currency-1", "0"));
+            Value2.setText(prefs.getString("Currency-2", "0"));
+        }
     }
 }
 
